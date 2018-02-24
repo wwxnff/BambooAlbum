@@ -2,6 +2,8 @@
  * Â©2016 Quicken Loans Inc. All rights reserved.
  */
 /* global jQuery FormData FileReader */
+
+
 (function ($) {
     $.fn.uploader = function (options, testMode) {
         return this.each(function (index) {
@@ -179,10 +181,76 @@
             }
 
             function uploadSubmitHandler () {
+                console.log("hello");
+               
+                var config = {
+                apiKey: "AIzaSyCAdTi8UrJTkpCtK-g2PGG3ftjT1mIZYwk",
+                authDomain: "bingophoto-bdc48.firebaseapp.com",
+                databaseURL: "https://bingophoto-bdc48.firebaseio.com",
+                projectId: "bingophoto-bdc48",
+                storageBucket: "bingophoto-bdc48.appspot.com",
+                messagingSenderId: "931072478542"
+                };
+            firebase.initializeApp(config);
+
                 if (state.fileBatch.length !== 0) {
                     var data = new FormData();
+                    console.log(state.fileBatch.length);
                     for (var i = 0; i < state.fileBatch.length; i++) {
                         data.append('files[]', state.fileBatch[i].file, state.fileBatch[i].fileName);
+                        var image = state.fileBatch[i].file;
+            var file = URL.createObjectURL(image);
+            console.log(image);
+            var storageRef = firebase.storage().ref();
+            var metadata = {
+                contentType: 'image/jpeg'
+            };
+            var uploadTask = storageRef.child('images/' + image.name).put(image);
+
+            // document.getElementById("img").src = URL.createObjectURL(image);
+
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+                function (snapshot) {
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
+                        case firebase.storage.TaskState.PAUSED: // or 'paused'
+                            console.log('Upload is paused');
+                            break;
+                        case firebase.storage.TaskState.RUNNING: // or 'running'
+                            console.log('Upload is running');
+                            break;
+                    }
+                }, function (error) {
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            // User doesn't have permission to access the object
+                            break;
+
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            break;
+
+
+                        case 'storage/unknown':
+                            // Unknown error occurred, inspect error.serverResponse
+                            break;
+                    }
+                }, function () {
+                    var downloadURL = uploadTask.snapshot.downloadURL;
+                    // Upload completed successfully, now we can get the download URL
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "http://localhost:3000/photo/upload", true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    var data = JSON.stringify({ 'userId' : "newuser", 'url' : downloadURL });
+
+                    xhr.send(data);
+
+                    console.log("sibufiashdfiahsdof");
+                });
+
+            //////////////////
                     }
                     $.ajax({
                         type: 'POST',
