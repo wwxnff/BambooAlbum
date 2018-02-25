@@ -211,7 +211,6 @@
 
             uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
                 function (snapshot) {
-                    console.log("snapshot");
                     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                     var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log('Upload is ' + progress + '% done');
@@ -239,10 +238,7 @@
                             break;
                     }
                 }, function () {
-
                     var downloadURL = uploadTask.snapshot.downloadURL;
-                    console.log("url");
-                    console.log(downloadURL);
                     // Upload completed successfully, now we can get the download URL
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "http://localhost:3000/photo/upload", true);
