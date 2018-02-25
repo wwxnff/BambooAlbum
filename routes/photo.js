@@ -124,17 +124,19 @@ function getUrls(images) {
 	});
 	
 
-	router.post('/delete',function(req,res,next){
-		MongoClient.connect(url,function(err,db){
-		var dbo = db.db("userdb");
-	    dbo.collection(req.body.userId).deleteOne(req.body,function(err,obj){
-	    	if (err) throw err;
-	    	else res.send("deleted")
-	    	db.close();
-	    });
+router.post('/delete',function(req,res,next){
+		MongoClient.connect(connectionString,function(err,client){
+		if (err) throw err;
+		var dbo = client.db("userImage");
+		var myquery = { url : req.body.url };
+		dbo.collection(req.body.userId).deleteOne(myquery,function(err,result){
+		if (err) throw err;
+		var urls = getUrls(result);
+		res.send("1 document deleted");
+		client.close();
+		});
 	});
 	});
-
 
 
 
