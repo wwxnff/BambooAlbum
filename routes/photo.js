@@ -42,7 +42,6 @@ router.use(function (req, res, next) {
 
 	router.post('/upload',function(req,res,next){
 	var photoUrl = req.body.url;
-	console.log(photoUrl);
 	axios({
 	  method: 'post',
 	  url: uriBase,
@@ -73,6 +72,58 @@ res.send("error");
 }); 
 	});
 
+function checkAllTags(image, tags){
+	for (var i=0; i < tags.length; i++){
+		if(!image["tags"].includes(tags[i]))
+			return false;
+	}
+	return true;
+}
+
+function photoFilter(images,tags) {
+	var ans = [];
+	for (var i = 0; i<images.length; i++)
+		if(checkAllTags(images[i], tags))
+			ans.push(images[i].url);
+	return ans;
+}
+
+function getUrls(images) {
+	var ans = [];
+	for (var i = 0; i<images.length; i++)
+			ans.push(images[i].url);
+	return ans;
+}
+
+	router.post('/filter',function(req,res,next){
+		var user = req.body.userId;
+		MongoClient.connect(connectionString,function(err,client){
+		if (err) throw err;
+		var dbo = client.db("userImage");
+		dbo.collection(req.body.userId).find({}).toArray(function(err,result){
+		if (err) throw err;
+		var urls = photoFilter(result,req.body.tags);
+		var filterPhoto = { "urls" : urls }; 
+		res.send(filterPhoto);
+		});
+	});
+	});
+
+	router.post('/all',function(req,res,next){
+		var user = req.body.userId;
+		MongoClient.connect(connectionString,function(err,client){
+		if (err) throw err;
+		var dbo = client.db("userImage");
+		dbo.collection(req.body.userId).find({}).toArray(function(err,result){
+		if (err) throw err;
+		var urls = getUrls(result);
+		var filterPhoto = { "urls" : urls }; 
+		res.send(filterPhoto);
+		});
+	});
+	});
+	
+
 	router.post('/delete',function(req,res,next){
 		MongoClient.connect(url,function(err,db){
 		var dbo = db.db("userdb");
@@ -83,6 +134,7 @@ res.send("error");
 	    });
 	});
 	});
+
 
 
 
