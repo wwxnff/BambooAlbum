@@ -128,21 +128,12 @@ router.post('/delete',function(req,res,next){
 		MongoClient.connect(connectionString,function(err,client){
 		if (err) throw err;
 		var dbo = client.db("userImage");
-<<<<<<< HEAD
 		var myquery = { url : req.body.url };
 		dbo.collection(req.body.userId).deleteOne(myquery,function(err,result){
 		if (err) throw err;
 		var urls = getUrls(result);
 		res.send("1 document deleted");
 		client.close();
-=======
-		var myquery = { url : req.body.url }
-		dbo.collection(req.body.userId).deleteOne(myquery,(function(err,result){
-		if (err) throw err;
-		var urls = getUrls(result);
-		res.send("1 document deleted");
-		db.close();
->>>>>>> 500c0924d2f1f6cfe96496b996ac3d3ebd22289b
 		});
 	});
 	});
