@@ -21,24 +21,7 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.get('/register', function(req, res, next) {
-	  res.send("register page");
-	});
-
-	router.post('/test', function(req, res, next) {
-	MongoClient.connect(url,function(err,db){
-	if (err) throw err;
-	var dbo = db.db("mydb");
-	dbo.createCollection("customers", function(err,res){
-		if(err) throw err;
-		console.log("collection created!");
-		db.close();
-	});
-});
-	});
-
-
-router.post('/register/submit', function(req, res, next) {
+router.post('/register', function(req, res, next) {
 	  MongoClient.connect(connectionString,function(err,client){
 	  var dbo = client.db("users");
 	  if (!req.body.userId || !req.body.password){
@@ -61,11 +44,10 @@ router.post('/register/submit', function(req, res, next) {
 	});
 });
 
-router.get('/signup', function(req, res){
-   res.render('signup');
-});
-
-router.post('/login/submit',function(req,res){
+router.post('/login',function(req,res){
+	if (req.session.user !== null){
+		res.send("Error");
+	}else{
 MongoClient.connect(connectionString,function(err,client){
 	var dbo = client.db("users");
 	if (!req.body.userId || !req.body.password){
@@ -85,6 +67,7 @@ MongoClient.connect(connectionString,function(err,client){
 		});
 	}
 });
+}
 });
 
 router.post('/logout',function(req,res){
