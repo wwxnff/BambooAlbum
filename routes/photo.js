@@ -134,7 +134,6 @@ router.post('/delete',function(req,res,next){
 		var urls = getUrls(result);
 		res.send("1 document deleted");
 		client.close();
-
 		});
 	});
 	});
