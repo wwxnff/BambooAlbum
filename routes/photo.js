@@ -15,13 +15,12 @@
 		var subscriptionKey = "e59470407d82483288140d96cecb8ef0";
 		
 		// Store to MongoDB Atlas
-		var connectionString = "mongodb+srv://admin:admin@test-zokjp.mongodb.net/test";
+	//	var connectionString = "mongodb://localhost:27017/data";
+		var connectionString = "mongodb+srv://admin1:admin@test-zokjp.mongodb.net/test";
 
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true })); 
-router.use(upload.array());
-//router.use(cookieParser());
-router.use(session({secret: "Bamboo Album"}));
+		router.use(upload.array());
+		router.use(bodyParser.json());
+		router.use(bodyParser.urlencoded({ extended: true })); 
 
 router.use(function (req, res, next) {
     // Website you wish to allow to connect
@@ -37,9 +36,13 @@ router.use(function (req, res, next) {
     next();
 });
 
+	/* GET users listing. */
+	router.get('/', function(req, res, next) {
+	  res.sendFile(path.join(__dirname, '../','add.html'));
+	});
+
 	router.post('/upload',function(req,res,next){
 	var photoUrl = req.body.url;
-	var user = req.session.user.toString();
 	axios({
 	  method: 'post',
 	  url: uriBase,
@@ -59,7 +62,7 @@ router.use(function (req, res, next) {
 		if (err) res.send("error");
 		var dbo = client.db("userImage");
 		req.body["tags"] = response.data.description.tags;
-		dbo.collection(user).insertOne(req.body,function(err,response){
+		dbo.collection(req.body.userId).insertOne(req.body,function(err,response){
 		if (err) throw res.send("error");
 		else res.send("success");
 		client.close();			
@@ -94,42 +97,42 @@ function getUrls(images) {
 }
 
 	router.post('/filter',function(req,res,next){
-		var user = req.session.user.toString();
+		var user = req.body.userId;
 		MongoClient.connect(connectionString,function(err,client){
 		if (err) throw err;
 		var dbo = client.db("userImage");
-		dbo.collection(user).find({}).toArray(function(err,result){
+		dbo.collection(req.body.userId).find({}).toArray(function(err,result){
 		if (err) throw err;
 		var urls = photoFilter(result,req.body.tags);
 		var filterPhoto = { "urls" : urls }; 
 		res.send(filterPhoto);
+		client.close();
 		});
 	});
 	});
 
 	router.post('/all',function(req,res,next){
-		var user = req.session.user.toString();
-		console.log(user);
+		var user = req.body.userId;
 		MongoClient.connect(connectionString,function(err,client){
 		if (err) throw err;
 		var dbo = client.db("userImage");
-		dbo.collection(user).find({}).toArray(function(err,result){
+		dbo.collection(req.body.userId).find({}).toArray(function(err,result){
 		if (err) throw err;
 		var urls = getUrls(result);
 		var filterPhoto = { "urls" : urls }; 
 		res.send(filterPhoto);
+		client.close();
 		});
 	});
 	});
 	
 
 router.post('/delete',function(req,res,next){
-	    var user = req.session.user.toString();
 		MongoClient.connect(connectionString,function(err,client){
 		if (err) throw err;
 		var dbo = client.db("userImage");
 		var myquery = { url : req.body.url };
-		dbo.collection(user).deleteOne(myquery,function(err,result){
+		dbo.collection(req.body.userId).deleteOne(myquery,function(err,result){
 		if (err) throw err;
 		var urls = getUrls(result);
 		res.send("1 document deleted");
@@ -137,16 +140,6 @@ router.post('/delete',function(req,res,next){
 		});
 	});
 	});
-
-router.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  if (req.session.user == null) res.send("Please login first!");
-});
 
 
 
