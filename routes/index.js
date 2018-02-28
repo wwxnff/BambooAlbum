@@ -14,7 +14,7 @@ router.use(upload.array());
 router.use(cookieParser());
 router.use(session({secret: "Bamboo Album"}));
 
-var connectionString = "mongodb+srv://admin:admin@test-zokjp.mongodb.net/test";
+var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
 
 /* GET users listing. */
 router.get('*', function(req, res) {
