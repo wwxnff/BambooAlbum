@@ -13,7 +13,8 @@ router.use(upload.array());
 router.use(cookieParser());
 //router.use(session({secret: "Your secret key"}));
 
-var connectionString = "mongodb+srv://admin:admin@test-zokjp.mongodb.net/test";
+var connectionString = "mongodb://localhost:27017/data";
+//var connectionString = "mongodb+srv://admin:admin@test-zokjp.mongodb.net/test";
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
