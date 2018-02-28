@@ -16,7 +16,7 @@
 		
 		// Store to MongoDB Atlas
 	//	var connectionString = "mongodb://localhost:27017/data";
-		var connectionString = "mongodb+srv://admin1:admin@test-zokjp.mongodb.net/test";
+		var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
 
 		router.use(upload.array());
 		router.use(bodyParser.json());
