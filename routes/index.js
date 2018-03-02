@@ -3,22 +3,25 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer(); 
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
 var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true })); 
 router.use(upload.array());
-router.use(cookieParser());
-router.use(session({secret: "Bamboo Album"}));
 
-var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
-
+//var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
+var connectionString = "mongodb://localhost:27017/data";
 /* GET users listing. */
-router.get('*', function(req, res) {
+
+
+
+router.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../public','index.html'));
+});
+
+router.post('/try', function(req, res) {
+ res.send('You are ' + req.session.userId);
 });
 
 
@@ -46,7 +49,9 @@ router.post('/register', function(req, res, next) {
 });
 
 router.post('/login',function(req,res){
-	if (req.session.user !== null){
+	if (req.session.user !== undefined){
+
+		console.log(req.session.user);
  res.send({info:"error"});
  	}else{
 MongoClient.connect(connectionString,function(err,client){
@@ -60,10 +65,11 @@ MongoClient.connect(connectionString,function(err,client){
 			if (result === null) res.send("The user doesn't exist");
 			else{
 				if (result.password === req.body.password){
-					req.session.user = req.body.userId;
-					 res.send({info:"error"});
+					req.session.userId = req.body.userId;
+					 res.send({info:"success"});
 				}else{
-			 res.send({info:"success"});
+					console.log(1);
+			 res.send({info:"error"});
 				}
 			}
 		});
@@ -74,7 +80,7 @@ MongoClient.connect(connectionString,function(err,client){
 
 router.post('/logout',function(req,res){
 	req.session.destroy(function(){
-		res.send("you are logged out");
+		res.send("success");
 	});
 });
 module.exports = router;

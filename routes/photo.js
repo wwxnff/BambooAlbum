@@ -15,8 +15,8 @@
 		var subscriptionKey = "e59470407d82483288140d96cecb8ef0";
 		
 		// Store to MongoDB Atlas
-//		var connectionString = "mongodb://localhost:27017/data";
-		var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
+		var connectionString = "mongodb://localhost:27017/data";
+//		var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
 
 		router.use(upload.array());
 		router.use(bodyParser.json());
@@ -62,7 +62,7 @@ router.use(function (req, res, next) {
 		if (err) res.send("error");
 		var dbo = client.db("userImage");
 		req.body["tags"] = response.data.description.tags;
-		dbo.collection(req.body.userId).insertOne(req.body,function(err,response){
+		dbo.collection(req.session.userId).insertOne(req.body,function(err,response){
 		if (err) throw res.send("error");
 		else res.send("success");
 		client.close();			
@@ -97,11 +97,11 @@ function getUrls(images) {
 }
 
 	router.post('/filter',function(req,res,next){
-		var user = req.body.userId;
+		var user = req.session.userId;
 		MongoClient.connect(connectionString,function(err,client){
 		if (err) throw err;
 		var dbo = client.db("userImage");
-		dbo.collection(req.body.userId).find({}).toArray(function(err,result){
+		dbo.collection(req.session.userId).find({}).toArray(function(err,result){
 		if (err) throw err;
 		var urls = photoFilter(result,req.body.tags);
 		var filterPhoto = { "urls" : urls }; 
@@ -112,11 +112,12 @@ function getUrls(images) {
 	});
 
 	router.post('/all',function(req,res,next){
-		var user = req.body.userId;
+		console.log(req.session.userId);
+		var user = req.session.userId;
 		MongoClient.connect(connectionString,function(err,client){
 		if (err) throw err;
 		var dbo = client.db("userImage");
-		dbo.collection(req.body.userId).find({}).toArray(function(err,result){
+		dbo.collection(req.session.userId).find({}).toArray(function(err,result){
 		if (err) throw err;
 		var urls = getUrls(result);
 		var filterPhoto = { "urls" : urls }; 
@@ -132,7 +133,7 @@ router.post('/delete',function(req,res,next){
 		if (err) throw err;
 		var dbo = client.db("userImage");
 		var myquery = { url : req.body.url };
-		dbo.collection(req.body.userId).deleteOne(myquery,function(err,result){
+		dbo.collection(req.session.userId).deleteOne(myquery,function(err,result){
 		if (err) throw err;
 		var urls = getUrls(result);
 		res.send("1 document deleted");
