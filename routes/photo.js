@@ -15,8 +15,8 @@
 		var subscriptionKey = "e59470407d82483288140d96cecb8ef0";
 		
 		// Store to MongoDB Atlas
-		var connectionString = "mongodb://localhost:27017/data";
-//		var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
+//		var connectionString = "mongodb://localhost:27017/data";
+		var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
 
 		router.use(upload.array());
 		router.use(bodyParser.json());

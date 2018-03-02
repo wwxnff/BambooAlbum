@@ -152,7 +152,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__home_page_home_page_component__["a" /* HomePageComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__login_login_component__["a" /* LoginComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__register_register_component__["a" /* RegisterComponent */]
+                __WEBPACK_IMPORTED_MODULE_11__register_register_component__["a" /* RegisterComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
@@ -228,7 +228,7 @@ var HomePageComponent = /** @class */ (function () {
         this.get_all_photos();
     };
     HomePageComponent.prototype.myfunction = function () {
-        window.open("https://randestudio.github.io", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800");
+        window.open("popup.html", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800");
     };
     HomePageComponent.prototype.add_tag = function () {
         var tag = "";
@@ -253,7 +253,7 @@ var HomePageComponent = /** @class */ (function () {
         var options = { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]().set('Content-Type', 'application/json') };
         var myObj = { 'userId': 'finaltest', 'tags': this.MyTags };
         var myJSON = JSON.stringify(myObj);
-        var request = this.http.post("http://localhost:3000/photo/filter", myJSON, options)
+        var request = this.http.post("/photo/filter", myJSON, options)
             .map(function (response) {
             _this.MyPhotoList = response['urls'];
             console.log(response);
@@ -265,7 +265,7 @@ var HomePageComponent = /** @class */ (function () {
         var options = { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]().set('Content-Type', 'application/json') };
         var myObj = { 'userId': 'finaltest' };
         var myJSON = JSON.stringify(myObj);
-        var request = this.http.post("http://localhost:3000/photo/all", myJSON, options)
+        var request = this.http.post("/photo/all", myJSON, options)
             .map(function (response) {
             _this.MyPhotoList = response['urls'];
             console.log(response);
@@ -280,7 +280,7 @@ var HomePageComponent = /** @class */ (function () {
         var options = { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]().set('Content-Type', 'application/json') };
         var myObj = { 'userId': 'finaltest', 'url': delete_url };
         var myJSON = JSON.stringify(myObj);
-        var request = this.http.post("http://localhost:3000/photo/delete", myJSON, options)
+        var request = this.http.post("/photo/delete", myJSON, options)
             .map(function (response) {
             console.log(response);
         });
@@ -369,7 +369,7 @@ var LoginComponent = /** @class */ (function () {
             var options = { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]().set('Content-Type', 'application/json') };
             var myObj = { 'userId': this.username, 'password': this.password };
             var myJSON = JSON.stringify(myObj);
-            var request = this.http.post("http://localhost:3000/login", myJSON, options)
+            var request = this.http.post("/login", myJSON, options)
                 .map(function (response) {
                 if (response['info'] === "success") {
                     localStorage.setItem("is_logged_in", "true");
