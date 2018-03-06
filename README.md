@@ -2,7 +2,7 @@
 ## Welcome to Bamboo Album!
 ### This is a project that is made in Hack The Valley 2017
 
-If you want to see the project, [Click Me :3](https://www.ruihanwang.net)
+If you want to see the project, [Click Me :3](bambooalbum.ruihanwang.net)
 
 After registering ang loging in, upload some pictures, add some tags to filter.
 
