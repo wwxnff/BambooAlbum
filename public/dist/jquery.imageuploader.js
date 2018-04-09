@@ -180,7 +180,7 @@
                     return name.replace(/[^a-zA-Z0-9.\-]/gi, ''); // Strip any special characters
                 }
 
-                function uploadSubmitHandler (callback) {
+                function uploadSubmitHandler () {
                    
                     var config = {
                     apiKey: "AIzaSyCAdTi8UrJTkpCtK-g2PGG3ftjT1mIZYwk",
@@ -195,8 +195,7 @@
                     if (state.fileBatch.length !== 0) {
                         var data = new FormData();
                         console.log(state.fileBatch.length);
-                        for (var j = 0; j < state.fileBatch.length || function(){  window.alert("upload successfully");
-                        window.close(); }(), false; j++) {
+                        for (var j = 0; j < state.fileBatch.length; j++) {
                             ((i)=>{data.append('files[]', state.fileBatch[i].file, state.fileBatch[i].fileName);
                             var image = state.fileBatch[i].file;
                 var file = URL.createObjectURL(image);
@@ -252,7 +251,8 @@
                 //////////////////
                         })(j)}
                         
-                       
+                        window.alert("upload successfully");
+                        //window.close();
                         
                     }
                 }
