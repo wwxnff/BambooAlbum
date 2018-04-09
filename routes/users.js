@@ -17,28 +17,6 @@ var connectionString = "mongodb://localhost:27017/data";
 //var connectionString = "mongodb+srv://admin:admin@test-zokjp.mongodb.net/test";
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-
-router.get('/register', function(req, res, next) {
-	  res.send("register page");
-	});
-
-	router.post('/test', function(req, res, next) {
-	MongoClient.connect(url,function(err,db){
-	if (err) throw err;
-	var dbo = db.db("mydb");
-	dbo.createCollection("customers", function(err,res){
-		if(err) throw err;
-		console.log("collection created!");
-		db.close();
-	});
-});
-	});
-
-
 router.post('/register/submit', function(req, res, next) {
 	  MongoClient.connect(connectionString,function(err,client){
 	  var dbo = client.db("users");
@@ -50,20 +28,16 @@ router.post('/register/submit', function(req, res, next) {
 		dbo.collection("usersData").findOne({userId : req.body.userId}, function(err,result){
 			if (err) throw err;
 			if (result !== null){
-			res.send("The username already existed");
+			res.send("error");
 			}else{
-				dbo.collection("usersData").insertOne(req.body,function(err,resp){
-					if (err) throw err;
-					else res.send("Success");
-				});
+			dbo.collection("usersData").insertOne(req.body,function(err,resp){
+			if (err) throw err;
+			else res.send("success");
+			});
 		}
 		});
 	  }
 	});
-});
-
-router.get('/signup', function(req, res){
-   res.render('signup');
 });
 
 router.post('/login/submit',function(req,res){
@@ -77,7 +51,7 @@ MongoClient.connect(connectionString,function(err,client){
 			if (result === null) res.send("The user doesn't exist");
 			else{
 				if (result.password === req.body.password){
-					res.send("Success");
+					res.send("success");
 				}else{
 					res.send("incorrect password, enter it again");
 				}
