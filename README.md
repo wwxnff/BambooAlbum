@@ -15,6 +15,6 @@ put a tag that you think fits a photo, eg. car, color, animal, anything!
 ![search](search.png)
 
 Feel free to contribute to our demo pictures too!, just go upload photos, and then
-![upload] (upload.png)
+![upload](upload.png)
  
 
