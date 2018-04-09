@@ -20,10 +20,6 @@ router.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, '../public','index.html'));
 });
 
-router.post('/try', function(req, res) {
- res.send('You are ' + req.session.userId);
-});
-
 
 router.post('/register', function(req, res, next) {
 	  MongoClient.connect(connectionString,function(err,client){
@@ -68,7 +64,6 @@ MongoClient.connect(connectionString,function(err,client){
 					req.session.userId = req.body.userId;
 					 res.send({info:"success"});
 				}else{
-					console.log(1);
 			 res.send({info:"error"});
 				}
 			}

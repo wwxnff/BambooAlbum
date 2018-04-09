@@ -2,12 +2,19 @@
 ## Welcome to Bamboo Album!
 ### This is a project that is made in Hack The Valley II 2017
 
-If you want to see the project, [Click Me :3](https://bambooalbum.herokuapp.com)
+Here is the [project](https://bambooalbum.herokuapp.com)
 
-After registering ang loging in, upload some pictures, add some tags to filter.
+You can Register your own account or use the one that we provide with several demo pictures
+![login](login.png)
+We already prepared a test account for you, the user id is : finaltest and the password is 123
 
-We already prepared a test account for you, so you can try out immediately without uploading pictures
+In this account, there are many demo pictures
+![main](main.png)
 
-The user id is : finaltest and the password is 123
+put a tag that you think fits a photo, eg. car, color, animal, anything!
+![search](search.png)
 
-Try to put some tags, and click search
+Feel free to contribute to our demo pictures too!, just go upload photos, and then
+![upload] (upload.png)
+ 
+
