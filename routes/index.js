@@ -10,8 +10,6 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true })); 
 router.use(upload.array());
 
-var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
-//var connectionString = "mongodb://localhost:27017/data";
 /* GET users listing. */
 
 
@@ -46,8 +44,6 @@ router.post('/register', function(req, res, next) {
 
 router.post('/login',function(req,res){
 	if (req.session.user !== undefined){
-
-		console.log(req.session.user);
  res.send({info:"error"});
  	}else{
 MongoClient.connect(connectionString,function(err,client){
@@ -76,7 +72,6 @@ MongoClient.connect(connectionString,function(err,client){
 router.post('/logout',function(req,res){
 	req.session.destroy(function(){
 		res.send("success");
-		console.log("fine");
 	});
 });
 module.exports = router;
