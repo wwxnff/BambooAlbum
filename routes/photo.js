@@ -12,11 +12,8 @@
 
 		//variables for calling microsoft API
 		var uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze";
-		var subscriptionKey = "697c381e803946fcbffde46d2c1b098b";
 		
 		// Store to MongoDB Atlas
-//		var connectionString = "mongodb://localhost:27017/data";
-		var connectionString = "mongodb+srv://admin:admin@bambooalbum-zokjp.mongodb.net/test";
 
 		router.use(upload.array());
 		router.use(bodyParser.json());
